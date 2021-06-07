@@ -34,4 +34,17 @@ class GithubAuthenticator {
 
   Future<bool> isSignedIn() =>
       getSignedInCredentials().then((credentials) => credentials != null);
+
+  AuthorizationCodeGrant createGrant() {
+    return AuthorizationCodeGrant(
+      clientId,
+      authorizationEndpoint,
+      tokenEndpoint,
+      secret: clientSecret,
+    );
+  }
+
+  Uri getAuthorizationUrl(AuthorizationCodeGrant grant) {
+    return grant.getAuthorizationUrl(redirectUrl, scopes: scopes);
+  }
 }
