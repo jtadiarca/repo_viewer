@@ -99,7 +99,7 @@ class GithubAuthenticator {
       try {
         _dio.deleteUri(
           revocationEndpoint,
-          data: {'acces_token': accessToken},
+          data: {'access_token': accessToken},
           options: Options(
             headers: {
               'Authorization': 'basic $usernameAndPassword',
