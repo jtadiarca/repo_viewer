@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart';
 
+import '../../core/infrastructure/dio_extensions.dart';
 import '../../core/shared/encoders.dart';
 import '../domain/auth_failure.dart';
 import 'credentials_storage/credentials_storage.dart';
@@ -106,8 +105,7 @@ class GithubAuthenticator {
         ),
       );
     } on DioError catch (e) {
-      if (e.type == DioErrorType.other && e.error is SocketException) {
-        print('Token not revoked');
+      if (e.isNoConnectionError) {
       } else {
         rethrow;
       }
