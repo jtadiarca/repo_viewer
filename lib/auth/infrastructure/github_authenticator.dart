@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -96,15 +98,24 @@ class GithubAuthenticator {
       final usernameAndPassword =
           stringToBase64.encode('$clientId:$clientSecret');
 
-      _dio.deleteUri(
-        revocationEndpoint,
-        data: {'acces_token': accessToken},
-        options: Options(
-          headers: {
-            'Authorization': 'basic $usernameAndPassword',
-          },
-        ),
-      );
+      try {
+        _dio.deleteUri(
+          revocationEndpoint,
+          data: {'acces_token': accessToken},
+          options: Options(
+            headers: {
+              'Authorization': 'basic $usernameAndPassword',
+            },
+          ),
+        );
+      } on DioError catch (e) {
+        if (e.isNoConnectionError) {
+        } else {
+          rethrow;
+        }
+      }
+
+      await _credentialsStorage.clear();
     } on DioError catch (e) {
       if (e.isNoConnectionError) {
       } else {
@@ -112,8 +123,6 @@ class GithubAuthenticator {
       }
     } on PlatformException {
       return left(const AuthFailure.storage());
-    } finally {
-      await _credentialsStorage.clear();
     }
 
     return right(unit);
