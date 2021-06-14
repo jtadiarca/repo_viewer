@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -103,10 +105,18 @@ class GithubAuthenticator {
           },
         ),
       );
-      await _credentialsStorage.clear();
-      return right(unit);
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.other && e.error is SocketException) {
+        print('Token not revoked');
+      } else {
+        rethrow;
+      }
     } on PlatformException {
       return left(const AuthFailure.storage());
+    } finally {
+      await _credentialsStorage.clear();
     }
+
+    return right(unit);
   }
 }
