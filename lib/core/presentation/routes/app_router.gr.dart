@@ -7,9 +7,10 @@
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
 
+import '../../../auth/presentation/authorization_page.dart' as _i5;
 import '../../../auth/presentation/sign_in_page.dart' as _i4;
 import '../../../splash/presentation/splash_page.dart' as _i3;
-import '../../../starred_repos/presentation/starred_repos_page.dart' as _i5;
+import '../../../starred_repos/presentation/starred_repos_page.dart' as _i6;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
@@ -27,10 +28,15 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return const _i4.SignInPage();
         }),
+    AuthorizationRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return const _i5.AuthorizationPage();
+        }),
     StarredReposRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (_) {
-          return const _i5.StarredReposPage();
+          return const _i6.StarredReposPage();
         })
   };
 
@@ -38,6 +44,7 @@ class AppRouter extends _i1.RootStackRouter {
   List<_i1.RouteConfig> get routes => [
         _i1.RouteConfig(SplashRoute.name, path: '/'),
         _i1.RouteConfig(SignInRoute.name, path: '/sign-in'),
+        _i1.RouteConfig(AuthorizationRoute.name, path: '/auth'),
         _i1.RouteConfig(StarredReposRoute.name, path: '/starred')
       ];
 }
@@ -52,6 +59,12 @@ class SignInRoute extends _i1.PageRouteInfo {
   const SignInRoute() : super(name, path: '/sign-in');
 
   static const String name = 'SignInRoute';
+}
+
+class AuthorizationRoute extends _i1.PageRouteInfo {
+  const AuthorizationRoute() : super(name, path: '/auth');
+
+  static const String name = 'AuthorizationRoute';
 }
 
 class StarredReposRoute extends _i1.PageRouteInfo {
