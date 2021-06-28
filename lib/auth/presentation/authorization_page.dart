@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:repo_viewer/auth/infrastructure/github_authenticator.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -17,6 +19,14 @@ class AuthorizationPage extends StatefulWidget {
 }
 
 class _AuthorizationPageState extends State<AuthorizationPage> {
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isAndroid) {
+      WebView.platform = SurfaceAndroidWebView();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
