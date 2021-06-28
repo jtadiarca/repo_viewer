@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,13 +36,22 @@ class SignInPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // ref.read(authNotifierProvider.notifier).signIn()
-                      context
-                          .read(authNotifierProvider.notifier)
-                          .signIn((authorizationUrl) {
-                        AutoRouter.of(context).push(
-                          AuthorizationRoute(),
-                        );
-                      });
+                      context.read(authNotifierProvider.notifier).signIn(
+                        (authorizationUrl) {
+                          final completer = Completer<Uri>();
+
+                          AutoRouter.of(context).push(
+                            AuthorizationRoute(
+                              authorizationUrl: authorizationUrl,
+                              onAuthorizationCodeRedirectAttempt:
+                                  (redirectedUrl) {
+                                completer.complete(redirectedUrl);
+                              },
+                            ),
+                          );
+                          return completer.future;
+                        },
+                      );
                     },
                     style: ButtonStyle(
                         backgroundColor:

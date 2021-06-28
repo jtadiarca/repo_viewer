@@ -30,8 +30,13 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     AuthorizationRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return const _i5.AuthorizationPage();
+        builder: (data) {
+          final args = data.argsAs<AuthorizationRouteArgs>();
+          return _i5.AuthorizationPage(
+              key: args.key,
+              authorizationUrl: args.authorizationUrl,
+              onAuthorizationCodeRedirectAttempt:
+                  args.onAuthorizationCodeRedirectAttempt);
         }),
     StarredReposRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -61,10 +66,33 @@ class SignInRoute extends _i1.PageRouteInfo {
   static const String name = 'SignInRoute';
 }
 
-class AuthorizationRoute extends _i1.PageRouteInfo {
-  const AuthorizationRoute() : super(name, path: '/auth');
+class AuthorizationRoute extends _i1.PageRouteInfo<AuthorizationRouteArgs> {
+  AuthorizationRoute(
+      {_i2.Key? key,
+      required Uri authorizationUrl,
+      required void Function(Uri) onAuthorizationCodeRedirectAttempt})
+      : super(name,
+            path: '/auth',
+            args: AuthorizationRouteArgs(
+                key: key,
+                authorizationUrl: authorizationUrl,
+                onAuthorizationCodeRedirectAttempt:
+                    onAuthorizationCodeRedirectAttempt));
 
   static const String name = 'AuthorizationRoute';
+}
+
+class AuthorizationRouteArgs {
+  const AuthorizationRouteArgs(
+      {this.key,
+      required this.authorizationUrl,
+      required this.onAuthorizationCodeRedirectAttempt});
+
+  final _i2.Key? key;
+
+  final Uri authorizationUrl;
+
+  final void Function(Uri) onAuthorizationCodeRedirectAttempt;
 }
 
 class StarredReposRoute extends _i1.PageRouteInfo {
