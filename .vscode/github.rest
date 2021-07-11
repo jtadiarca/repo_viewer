@@ -1,2 +1,36 @@
-GET https://api.github.com/user/starred?page=1
-Authorization: Bearer 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
+@baseUrl = https://api.github.com
+@token = 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
+@acceptHeader = application/vnd.github.v3.html+json
+
+GET {{baseUrl}}/user/starred
+    ?page=1
+Authorization: Bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+GET {{baseUrl}}/search/repositories
+    ?q=flutter
+    &page=1
+Authorization: Bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+GET {{baseUrl}}/repos/flutter/flutter/readme
+Authorization: Bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+PUT {{baseUrl}}/user/starred/flutter/flutter
+Authorization: Bearer {{token}}
+Accept: {{acceptHeader}}
+Content-Length: 0
+
+###
+DELETE {{baseUrl}}/user/starred/flutter/flutter
+Authorization: Bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+GET {{baseUrl}}/user/starred/flutter/flutter
+Authorization: Bearer {{token}}
+Accept: {{acceptHeader}}
