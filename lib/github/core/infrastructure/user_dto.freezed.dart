@@ -12,15 +12,25 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+UserDto _$UserDtoFromJson(Map<String, dynamic> json) {
+  return _UserDto.fromJson(json);
+}
+
 /// @nodoc
 class _$UserDtoTearOff {
   const _$UserDtoTearOff();
 
-  _UserDto call({required String name, required Uri avatarUrl}) {
+  _UserDto call(
+      {@JsonKey(name: 'login') required String name,
+      @JsonKey(name: 'avatar_url') required Uri avatarUrl}) {
     return _UserDto(
       name: name,
       avatarUrl: avatarUrl,
     );
+  }
+
+  UserDto fromJson(Map<String, Object> json) {
+    return UserDto.fromJson(json);
   }
 }
 
@@ -29,9 +39,12 @@ const $UserDto = _$UserDtoTearOff();
 
 /// @nodoc
 mixin _$UserDto {
+  @JsonKey(name: 'login')
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'avatar_url')
   Uri get avatarUrl => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserDtoCopyWith<UserDto> get copyWith => throw _privateConstructorUsedError;
 }
@@ -40,7 +53,9 @@ mixin _$UserDto {
 abstract class $UserDtoCopyWith<$Res> {
   factory $UserDtoCopyWith(UserDto value, $Res Function(UserDto) then) =
       _$UserDtoCopyWithImpl<$Res>;
-  $Res call({String name, Uri avatarUrl});
+  $Res call(
+      {@JsonKey(name: 'login') String name,
+      @JsonKey(name: 'avatar_url') Uri avatarUrl});
 }
 
 /// @nodoc
@@ -74,7 +89,9 @@ abstract class _$UserDtoCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
   factory _$UserDtoCopyWith(_UserDto value, $Res Function(_UserDto) then) =
       __$UserDtoCopyWithImpl<$Res>;
   @override
-  $Res call({String name, Uri avatarUrl});
+  $Res call(
+      {@JsonKey(name: 'login') String name,
+      @JsonKey(name: 'avatar_url') Uri avatarUrl});
 }
 
 /// @nodoc
@@ -105,13 +122,21 @@ class __$UserDtoCopyWithImpl<$Res> extends _$UserDtoCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_UserDto extends _UserDto {
-  const _$_UserDto({required this.name, required this.avatarUrl}) : super._();
+  const _$_UserDto(
+      {@JsonKey(name: 'login') required this.name,
+      @JsonKey(name: 'avatar_url') required this.avatarUrl})
+      : super._();
+
+  factory _$_UserDto.fromJson(Map<String, dynamic> json) =>
+      _$_$_UserDtoFromJson(json);
 
   @override
+  @JsonKey(name: 'login')
   final String name;
   @override
+  @JsonKey(name: 'avatar_url')
   final Uri avatarUrl;
 
   @override
@@ -140,16 +165,26 @@ class _$_UserDto extends _UserDto {
   @override
   _$UserDtoCopyWith<_UserDto> get copyWith =>
       __$UserDtoCopyWithImpl<_UserDto>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_UserDtoToJson(this);
+  }
 }
 
 abstract class _UserDto extends UserDto {
-  const factory _UserDto({required String name, required Uri avatarUrl}) =
-      _$_UserDto;
+  const factory _UserDto(
+      {@JsonKey(name: 'login') required String name,
+      @JsonKey(name: 'avatar_url') required Uri avatarUrl}) = _$_UserDto;
   const _UserDto._() : super._();
 
+  factory _UserDto.fromJson(Map<String, dynamic> json) = _$_UserDto.fromJson;
+
   @override
+  @JsonKey(name: 'login')
   String get name => throw _privateConstructorUsedError;
   @override
+  @JsonKey(name: 'avatar_url')
   Uri get avatarUrl => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
