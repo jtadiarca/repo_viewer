@@ -6,6 +6,7 @@ GET {{baseUrl}}/user/starred
     ?page=1
 Authorization: Bearer {{token}}
 Accept: {{acceptHeader}}
+If-None-Match: W/"aea81d210b40c99102436164da61a42f35b6b8a232f45d75d2889b1265734060"
 
 ###
 GET {{baseUrl}}/search/repositories
