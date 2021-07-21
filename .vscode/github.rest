@@ -1,12 +1,12 @@
 @baseUrl = https://api.github.com
-@token = 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
+@token = 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
 @acceptHeader = application/vnd.github.v3.html+json
 
 GET {{baseUrl}}/user/starred
     ?page=1
 Authorization: Bearer {{token}}
 Accept: {{acceptHeader}}
-If-None-Match: W/"aea81d210b40c99102436164da61a42f35b6b8a232f45d75d2889b1265734060"
+If-None-Match: W/"d111cb77b9e69058dcf4ec1d01403f96c9889d3c6fe454e2dc1ffaf1147f1c48"
 
 ###
 GET {{baseUrl}}/search/repositories

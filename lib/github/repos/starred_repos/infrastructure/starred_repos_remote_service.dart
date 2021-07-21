@@ -8,7 +8,9 @@ class StarredReposRemoteService {
 
   StarredReposRemoteService(this._dio);
 
-  Future<RemoteResponse<List<GithubRepoDto>>> getStarredReposPage(
-    int page,
-  ) async {}
+  // Future<RemoteResponse<List<GithubRepoDto>>> getStarredReposPage(
+  //   int page,
+  // ) async {
+  //   // _dio.get(path)
+  // }
 }
