@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:repo_viewer/core/infrastructure/network_exceptions.dart';
+import 'package:repo_viewer/github/core/infrastructure/github_headers.dart';
 
 import '../../../../core/infrastructure/dio_extensions.dart';
 import '../../../../core/infrastructure/remote_response.dart';
@@ -41,6 +42,22 @@ class StarredReposRemoteService {
           },
         ),
       );
+
+      switch (response.statusCode) {
+        case HttpStatus.notModified:
+          return const RemoteResponse.notModified();
+
+        case HttpStatus.ok:
+          final headers = GithubHeaders.parse(response);
+          await _headersCache.saveHeaders(requestUri, headers);
+          final convertedData = (response.data as List<dynamic>)
+              .map((e) => GithubRepoDto.fromJson(e as Map<String, dynamic>))
+              .toList();
+          return RemoteResponse.withNewData(convertedData);
+
+        default:
+          throw RestApiException(response.statusCode);
+      }
     } on DioError catch (e) {
       if (e.isNoConnectionError) {
         return const RemoteResponse.noConnection();
