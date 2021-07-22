@@ -1,5 +1,9 @@
-import 'package:dio/dio.dart';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:repo_viewer/core/infrastructure/network_exceptions.dart';
+
+import '../../../../core/infrastructure/dio_extensions.dart';
 import '../../../../core/infrastructure/remote_response.dart';
 import '../../../core/infrastructure/github_headers_cache.dart';
 import '../../../core/infrastructure/github_repo_dto.dart';
@@ -16,6 +20,35 @@ class StarredReposRemoteService {
   Future<RemoteResponse<List<GithubRepoDto>>> getStarredReposPage(
     int page,
   ) async {
-    _dio.get('');
+    final token = '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';
+    final accept = 'application/vnd.github.v3.html+json';
+    final requestUri = Uri.https(
+      'api.github.com',
+      '/user/starred',
+      {'page': '$page'},
+    );
+
+    final previousHeaders = await _headersCache.getHeaders(requestUri);
+
+    try {
+      final response = await _dio.getUri(
+        requestUri,
+        options: Options(
+          headers: {
+            HttpHeaders.authorizationHeader: 'bearer $token',
+            HttpHeaders.acceptHeader: accept,
+            HttpHeaders.ifNoneMatchHeader: previousHeaders?.etag ?? '',
+          },
+        ),
+      );
+    } on DioError catch (e) {
+      if (e.isNoConnectionError) {
+        return const RemoteResponse.noConnection();
+      } else if (e.response != null) {
+        throw RestApiException(e.response?.statusCode);
+      } else {
+        rethrow;
+      }
+    }
   }
 }

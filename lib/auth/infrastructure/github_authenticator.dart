@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
@@ -97,12 +99,12 @@ class GithubAuthenticator {
           stringToBase64.encode('$clientId:$clientSecret');
 
       try {
-        _dio.deleteUri(
+        await _dio.deleteUri(
           revocationEndpoint,
           data: {'access_token': accessToken},
           options: Options(
             headers: {
-              'Authorization': 'basic $usernameAndPassword',
+              HttpHeaders.authorizationHeader: 'basic $usernameAndPassword',
             },
           ),
         );
