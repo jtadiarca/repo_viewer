@@ -5,13 +5,14 @@ import '../../../../core/infrastructure/network_exceptions.dart';
 import '../../../core/domain/github_failure.dart';
 import '../../../core/domain/github_repo.dart';
 import '../../../core/infrastructure/github_repo_dto.dart';
+import 'starred_repos_local_service.dart';
 import 'starred_repos_remote_service.dart';
 
 class StarredRepository {
   final StarredReposRemoteService _remoteService;
-  // TODO: Local Service
+  final StarredReposLocalService _localService;
 
-  StarredRepository(this._remoteService);
+  StarredRepository(this._remoteService, this._localService);
 
   Future<Either<GithubFailure, Fresh<List<GithubRepo>>>> getStarredReposPage(
     int page,
@@ -20,19 +21,17 @@ class StarredRepository {
       final remotePageItems = await _remoteService.getStarredReposPage(page);
 
       return right(
-        remotePageItems.when(
-          // TODO: Local Service
-          noConnection: (maxPage) => Fresh.no(
-            [],
+        await remotePageItems.when(
+          noConnection: (maxPage) async => Fresh.no(
+            await _localService.getPage(page).then((_) => _.toDomain()),
             isNextPageAvailable: page < maxPage,
           ),
-          // TODO: Local Service
-          notModified: (maxPage) => Fresh.yes(
-            [],
+          notModified: (maxPage) async => Fresh.yes(
+            await _localService.getPage(page).then((_) => _.toDomain()),
             isNextPageAvailable: page < maxPage,
           ),
-          withNewData: (data, maxPage) {
-            // TODO: save data into the local service
+          withNewData: (data, maxPage) async {
+            await _localService.upsertPage(data, page);
             return Fresh.yes(
               data.toDomain(),
               isNextPageAvailable: page < maxPage,
