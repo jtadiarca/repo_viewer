@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$GithubFailureTearOff {
   const _$GithubFailureTearOff();
 
-  _Api api(HttpStatus httpStatus) {
+  _Api api(int? httpStatus) {
     return _Api(
       httpStatus,
     );
@@ -28,16 +28,16 @@ const $GithubFailure = _$GithubFailureTearOff();
 
 /// @nodoc
 mixin _$GithubFailure {
-  HttpStatus get httpStatus => throw _privateConstructorUsedError;
+  int? get httpStatus => throw _privateConstructorUsedError;
 
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(HttpStatus httpStatus) api,
+    required TResult Function(int? httpStatus) api,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(HttpStatus httpStatus)? api,
+    TResult Function(int? httpStatus)? api,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -63,7 +63,7 @@ abstract class $GithubFailureCopyWith<$Res> {
   factory $GithubFailureCopyWith(
           GithubFailure value, $Res Function(GithubFailure) then) =
       _$GithubFailureCopyWithImpl<$Res>;
-  $Res call({HttpStatus httpStatus});
+  $Res call({int? httpStatus});
 }
 
 /// @nodoc
@@ -83,7 +83,7 @@ class _$GithubFailureCopyWithImpl<$Res>
       httpStatus: httpStatus == freezed
           ? _value.httpStatus
           : httpStatus // ignore: cast_nullable_to_non_nullable
-              as HttpStatus,
+              as int?,
     ));
   }
 }
@@ -93,7 +93,7 @@ abstract class _$ApiCopyWith<$Res> implements $GithubFailureCopyWith<$Res> {
   factory _$ApiCopyWith(_Api value, $Res Function(_Api) then) =
       __$ApiCopyWithImpl<$Res>;
   @override
-  $Res call({HttpStatus httpStatus});
+  $Res call({int? httpStatus});
 }
 
 /// @nodoc
@@ -113,7 +113,7 @@ class __$ApiCopyWithImpl<$Res> extends _$GithubFailureCopyWithImpl<$Res>
       httpStatus == freezed
           ? _value.httpStatus
           : httpStatus // ignore: cast_nullable_to_non_nullable
-              as HttpStatus,
+              as int?,
     ));
   }
 }
@@ -124,7 +124,7 @@ class _$_Api extends _Api {
   const _$_Api(this.httpStatus) : super._();
 
   @override
-  final HttpStatus httpStatus;
+  final int? httpStatus;
 
   @override
   String toString() {
@@ -152,7 +152,7 @@ class _$_Api extends _Api {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(HttpStatus httpStatus) api,
+    required TResult Function(int? httpStatus) api,
   }) {
     return api(httpStatus);
   }
@@ -160,7 +160,7 @@ class _$_Api extends _Api {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(HttpStatus httpStatus)? api,
+    TResult Function(int? httpStatus)? api,
     required TResult orElse(),
   }) {
     if (api != null) {
@@ -191,11 +191,11 @@ class _$_Api extends _Api {
 }
 
 abstract class _Api extends GithubFailure {
-  const factory _Api(HttpStatus httpStatus) = _$_Api;
+  const factory _Api(int? httpStatus) = _$_Api;
   const _Api._() : super._();
 
   @override
-  HttpStatus get httpStatus => throw _privateConstructorUsedError;
+  int? get httpStatus => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ApiCopyWith<_Api> get copyWith => throw _privateConstructorUsedError;
