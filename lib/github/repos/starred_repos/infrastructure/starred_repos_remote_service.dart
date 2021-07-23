@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:repo_viewer/core/infrastructure/network_exceptions.dart';
 import 'package:repo_viewer/github/core/infrastructure/github_headers.dart';
+import 'package:repo_viewer/github/core/infrastructure/pagination_config.dart';
 
 import '../../../../core/infrastructure/dio_extensions.dart';
 import '../../../../core/infrastructure/remote_response.dart';
@@ -26,7 +27,10 @@ class StarredReposRemoteService {
     final requestUri = Uri.https(
       'api.github.com',
       '/user/starred',
-      {'page': '$page'},
+      {
+        'page': '$page',
+        'per_page': PaginationConfig.itemsPerPage.toString(),
+      },
     );
 
     final previousHeaders = await _headersCache.getHeaders(requestUri);
