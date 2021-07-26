@@ -110,22 +110,24 @@ class GithubAuthenticator {
         );
       } on DioError catch (e) {
         if (e.isNoConnectionError) {
+          // Ignoring
         } else {
           rethrow;
         }
       }
-
-      await _credentialsStorage.clear();
-    } on DioError catch (e) {
-      if (e.isNoConnectionError) {
-      } else {
-        rethrow;
-      }
+      return clearCredentialsStorage();
     } on PlatformException {
       return left(const AuthFailure.storage());
     }
+  }
 
-    return right(unit);
+  Future<Either<AuthFailure, Unit>> clearCredentialsStorage() async {
+    try {
+      await _credentialsStorage.clear();
+      return right(unit);
+    } on PlatformException catch (e) {
+      return left(const AuthFailure.storage());
+    }
   }
 
   Future<Either<AuthFailure, Credentials>> refresh(
