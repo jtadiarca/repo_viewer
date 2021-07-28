@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:repo_viewer/auth/application/auth_notifier.dart';
-import 'package:repo_viewer/auth/infrastructure/github_authenticator.dart';
+
+import '../application/auth_notifier.dart';
+import 'github_authenticator.dart';
 
 class Oauth2Interceptor extends Interceptor {
   final GithubAuthenticator _authenticator;
@@ -42,13 +43,14 @@ class Oauth2Interceptor extends Interceptor {
 
       await _authNotifier.checkAndUpdateAuthStatus();
 
-      final refreshCredentials = await _authenticator.getSignedInCredentials();
-      if (refreshCredentials != null) {
+      final refreshedCredentials =
+          await _authenticator.getSignedInCredentials();
+      if (refreshedCredentials != null) {
         handler.resolve(
           await _dio.fetch(
             errorResponse.requestOptions
               ..headers[HttpHeaders.authorizationHeader] =
-                  'bearer $refreshCredentials',
+                  'bearer ${refreshedCredentials.accessToken}',
           ),
         );
       }
