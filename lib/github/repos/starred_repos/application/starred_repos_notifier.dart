@@ -1,8 +1,10 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../core/domain/fresh.dart';
 import '../../../core/domain/github_failure.dart';
 import '../../../core/domain/github_repo.dart';
+import '../infrastructure/starred_repos_repository.dart';
 
 part 'starred_repos_notifier.freezed.dart';
 
@@ -24,4 +26,13 @@ class StarredReposState with _$StarredReposState {
     GithubFailure failure,
     Fresh<List<GithubRepo>> repos,
   ) = _LoadFailure;
+}
+
+class StarredReposNotifier extends StateNotifier<StarredReposState> {
+  final StarredReposRepository _repository;
+
+  StarredReposNotifier(this._repository)
+      : super(StarredReposState.initial(Fresh.yes([])));
+
+  int _page = 1;
 }
