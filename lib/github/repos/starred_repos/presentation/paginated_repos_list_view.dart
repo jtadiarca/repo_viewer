@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../core/shared/providers.dart';
+import 'repo_tile.dart';
 
 class PaginatedReposListView extends StatelessWidget {
   const PaginatedReposListView({
@@ -20,6 +21,16 @@ class PaginatedReposListView extends StatelessWidget {
             loadSuccess: (_) => _.repos.entity.length,
             loadFailure: (_) => _.repos.entity.length + 1,
           ),
+          itemBuilder: (context, index) {
+            return state.map(
+              initial: (_) => Container(),
+              loadInProgress: (_) => Container(),
+              loadSuccess: (_) => RepoTile(
+                repo: _.repos.entity[index],
+              ),
+              loadFailure: (_) => Container(),
+            );
+          },
         );
       },
     );
