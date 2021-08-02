@@ -8,11 +8,11 @@ import '../../../core/infrastructure/github_repo_dto.dart';
 import 'starred_repos_local_service.dart';
 import 'starred_repos_remote_service.dart';
 
-class StarredRepository {
+class StarredReposRepository {
   final StarredReposRemoteService _remoteService;
   final StarredReposLocalService _localService;
 
-  StarredRepository(this._remoteService, this._localService);
+  StarredReposRepository(this._remoteService, this._localService);
 
   Future<Either<GithubFailure, Fresh<List<GithubRepo>>>> getStarredReposPage(
     int page,
