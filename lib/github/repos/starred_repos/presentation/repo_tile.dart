@@ -21,10 +21,23 @@ class RepoTile extends StatelessWidget {
       ),
       leading: CircleAvatar(
         backgroundImage: CachedNetworkImageProvider(
-          repo.owner.avatarUrl.toString(),
+          repo.owner.avatarUrlSmall.toString(),
         ),
         backgroundColor: Colors.transparent,
       ),
+      trailing: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.star_border),
+          Text(
+            repo.stargazersCount.toString(),
+            style: Theme.of(context).textTheme.caption,
+          ),
+        ],
+      ),
+      onTap: () {
+        // TODO Open the detail page
+      },
     );
   }
 }

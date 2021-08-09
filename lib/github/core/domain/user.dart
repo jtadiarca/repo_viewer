@@ -9,4 +9,6 @@ class User with _$User {
     required String name,
     required Uri avatarUrl,
   }) = _User;
+
+  Uri get avatarUrlSmall => Uri.parse('${avatarUrl.toString()}&s=64');
 }
