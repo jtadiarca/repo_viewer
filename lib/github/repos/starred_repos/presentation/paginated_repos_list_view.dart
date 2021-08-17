@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:repo_viewer/core/presentation/toasts.dart';
 
 import '../../../core/shared/providers.dart';
 import '../application/starred_repos_notifier.dart';
@@ -18,6 +19,7 @@ class PaginatedReposListView extends StatefulWidget {
 
 class _PaginatedReposListViewState extends State<PaginatedReposListView> {
   bool canLoadNextPage = false;
+  bool hasShownNoConnectionToast = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,15 @@ class _PaginatedReposListViewState extends State<PaginatedReposListView> {
               state.map(
                 initial: (_) => canLoadNextPage = true,
                 loadInProgress: (_) => canLoadNextPage = false,
-                loadSuccess: (_) => canLoadNextPage = _.isNextPageAvailable,
+                loadSuccess: (_) {
+                  if (!_.repos.isFresh && !hasShownNoConnectionToast) {
+                    hasShownNoConnectionToast = true;
+                    showNoConnectionToast(
+                        "You're not online. Some information maybe outdated.",
+                        context);
+                  }
+                  return canLoadNextPage = _.isNextPageAvailable;
+                },
                 loadFailure: (_) => canLoadNextPage = false,
               );
             },
