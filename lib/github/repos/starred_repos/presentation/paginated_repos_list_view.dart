@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:repo_viewer/core/presentation/toasts.dart';
+import 'package:repo_viewer/github/core/presentation/no_results_display.dart';
 
 import '../../../core/shared/providers.dart';
 import '../application/starred_repos_notifier.dart';
@@ -29,43 +30,51 @@ class _PaginatedReposListViewState extends State<PaginatedReposListView> {
 
         final state = ref.watch(starredReposNotifierProvider);
         return ProviderListener<StarredReposState>(
-            provider: starredReposNotifierProvider,
-            onChange: (context, state) {
-              state.map(
-                initial: (_) => canLoadNextPage = true,
-                loadInProgress: (_) => canLoadNextPage = false,
-                loadSuccess: (_) {
-                  if (!_.repos.isFresh && !hasShownNoConnectionToast) {
-                    hasShownNoConnectionToast = true;
-                    showNoConnectionToast(
-                        "You're not online. Some information maybe outdated.",
-                        context);
-                  }
-                  return canLoadNextPage = _.isNextPageAvailable;
-                },
-                loadFailure: (_) => canLoadNextPage = false,
-              );
-            },
-            child: NotificationListener<ScrollNotification>(
-              onNotification: (notification) {
-                final metrics = notification.metrics;
-                final limit =
-                    metrics.maxScrollExtent - metrics.viewportDimension / 3;
-
-                if (canLoadNextPage && metrics.pixels >= limit) {
-                  canLoadNextPage = false;
-                  // ref
-                  //     .read(starredReposNotifierProvider.notifier)
-                  //     .getNextStarredReposPage();
-
-                  context
-                      .read(starredReposNotifierProvider.notifier)
-                      .getNextStarredReposPage();
+          provider: starredReposNotifierProvider,
+          onChange: (context, state) {
+            state.map(
+              initial: (_) => canLoadNextPage = true,
+              loadInProgress: (_) => canLoadNextPage = false,
+              loadSuccess: (_) {
+                if (!_.repos.isFresh && !hasShownNoConnectionToast) {
+                  hasShownNoConnectionToast = true;
+                  showNoConnectionToast(
+                      "You're not online. Some information maybe outdated.",
+                      context);
                 }
-                return false;
+                return canLoadNextPage = _.isNextPageAvailable;
               },
-              child: _PaginatedListView(state: state),
-            ));
+              loadFailure: (_) => canLoadNextPage = false,
+            );
+          },
+          child: NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              final metrics = notification.metrics;
+              final limit =
+                  metrics.maxScrollExtent - metrics.viewportDimension / 3;
+
+              if (canLoadNextPage && metrics.pixels >= limit) {
+                canLoadNextPage = false;
+                // ref
+                //     .read(starredReposNotifierProvider.notifier)
+                //     .getNextStarredReposPage();
+
+                context
+                    .read(starredReposNotifierProvider.notifier)
+                    .getNextStarredReposPage();
+              }
+              return false;
+            },
+            child: state.maybeWhen(
+                    loadSuccess: (repos, _) => repos.entity.isEmpty,
+                    orElse: () => false)
+                ? const NoResultsDisplay(
+                    message:
+                        "That's about everything we could find in your starred repos right now.",
+                  )
+                : _PaginatedListView(state: state),
+          ),
+        );
       },
     );
   }
