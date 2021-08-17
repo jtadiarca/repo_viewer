@@ -36,7 +36,26 @@ class _PaginatedReposListViewState extends State<PaginatedReposListView> {
                 loadFailure: (_) => canLoadNextPage = false,
               );
             },
-            child: _PaginatedListView(state: state));
+            child: NotificationListener<ScrollNotification>(
+              onNotification: (notification) {
+                final metrics = notification.metrics;
+                final limit =
+                    metrics.maxScrollExtent - metrics.viewportDimension / 3;
+
+                if (canLoadNextPage && metrics.pixels >= limit) {
+                  canLoadNextPage = false;
+                  // ref
+                  //     .read(starredReposNotifierProvider.notifier)
+                  //     .getNextStarredReposPage();
+
+                  context
+                      .read(starredReposNotifierProvider.notifier)
+                      .getNextStarredReposPage();
+                }
+                return false;
+              },
+              child: _PaginatedListView(state: state),
+            ));
       },
     );
   }
