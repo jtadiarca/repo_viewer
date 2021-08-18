@@ -6,24 +6,26 @@ import '../../../core/infrastructure/github_repo_dto.dart';
 import '../../../core/infrastructure/pagination_config.dart';
 import '../../core/infrastracture/repos_remote_service.dart';
 
-class StarredReposRemoteService extends ReposRemoteService {
-  StarredReposRemoteService(
+class SearchedReposRemoteService extends ReposRemoteService {
+  SearchedReposRemoteService(
     Dio dio,
     GithubHeadersCache headersCache,
   ) : super(dio, headersCache);
 
-  Future<RemoteResponse<List<GithubRepoDto>>> getStarredReposPage(
+  Future<RemoteResponse<List<GithubRepoDto>>> getSearchedReposPage(
+    String query,
     int page,
   ) async =>
       super.getPage(
         requestUri: Uri.https(
           'api.github.com',
-          '/user/starred',
+          '/search/repositories',
           {
+            'q': query,
             'page': '$page',
             'per_page': PaginationConfig.itemsPerPage.toString(),
           },
         ),
-        jsonDataSelector: (json) => json as List<dynamic>,
+        jsonDataSelector: (json) => json['items'] as List<dynamic>,
       );
 }
