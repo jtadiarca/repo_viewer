@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repo_viewer/core/presentation/toasts.dart';
-import 'package:repo_viewer/github/core/presentation/no_results_display.dart';
 
+import '../../../../core/presentation/toasts.dart';
+import '../../../core/presentation/no_results_display.dart';
 import '../../../core/shared/providers.dart';
 import '../application/starred_repos_notifier.dart';
 import 'failure_repo_tile.dart';
