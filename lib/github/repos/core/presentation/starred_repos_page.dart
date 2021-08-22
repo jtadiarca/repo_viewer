@@ -46,7 +46,9 @@ class _StarredReposPageState extends State<StarredReposPage> {
           )
         ],
       ),
-      body: PaginatedReposListView(),
+      body: PaginatedReposListView(
+        paginatedReposNotifierProvider: starredReposNotifierProvider,
+      ),
     );
   }
 }
