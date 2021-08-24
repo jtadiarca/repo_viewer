@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:repo_viewer/core/presentation/toasts.dart';
 
 import '../../../../auth/shared/providers.dart';
 import '../../../core/shared/providers.dart';
@@ -48,6 +47,17 @@ class _StarredReposPageState extends State<StarredReposPage> {
       ),
       body: PaginatedReposListView(
         paginatedReposNotifierProvider: starredReposNotifierProvider,
+        getNextPage: (/*ref*/ context) {
+          // ref
+          //     .read(starredReposNotifierProvider.notifier)
+          //     .getNextStarredReposPage();
+
+          context
+              .read(starredReposNotifierProvider.notifier)
+              .getNextStarredReposPage();
+        },
+        noResultsMessage:
+            "That's about everything we could find in your starred repos right now.",
       ),
     );
   }
