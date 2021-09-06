@@ -33,8 +33,8 @@ final starredReposRepositoryProvider = Provider(
   ),
 );
 
-final starredReposNotifierProvider =
-    StateNotifierProvider<StarredReposNotifier, PaginatedReposState>(
+final starredReposNotifierProvider = StateNotifierProvider.autoDispose<
+    StarredReposNotifier, PaginatedReposState>(
   (ref) => StarredReposNotifier(
     ref.watch(starredReposRepositoryProvider),
   ),
@@ -53,8 +53,8 @@ final searchedReposRepositoryProvider = Provider(
   ),
 );
 
-final searchedReposNotifierProvider =
-    StateNotifierProvider<SearchedReposNotifier, PaginatedReposState>(
+final searchedReposNotifierProvider = StateNotifierProvider.autoDispose<
+    SearchedReposNotifier, PaginatedReposState>(
   (ref) => SearchedReposNotifier(
     ref.watch(searchedReposRepositoryProvider),
   ),
