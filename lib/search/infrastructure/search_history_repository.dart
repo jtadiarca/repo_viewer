@@ -21,6 +21,20 @@ class SearchHistoryRepository {
                 )
               : null,
         )
-        .onSnapshots(_sembastDatabase.instance);
+        .onSnapshots(_sembastDatabase.instance)
+        .map((records) => records.reversed.map((e) => e.value).toList());
+  }
+
+  Future<void> addSearchTerm(String term) async {
+    ['flutter', 'dart', 'github', 'riverpod'].reversed;
+
+    await _store.add(_sembastDatabase.instance, term);
+    final count = await _store.count(_sembastDatabase.instance);
+    if (count > historyLength) {
+      await _store.delete(
+        _sembastDatabase.instance,
+        finder: Finder(limit: count - historyLength),
+      );
+    }
   }
 }
