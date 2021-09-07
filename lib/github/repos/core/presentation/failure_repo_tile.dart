@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:repo_viewer/github/core/domain/github_failure.dart';
-import 'package:repo_viewer/github/core/shared/providers.dart';
+
+import '../../../core/domain/github_failure.dart';
+import '../../../core/shared/providers.dart';
 
 class FailureRepoTile extends ConsumerWidget {
   final GithubFailure failure;
