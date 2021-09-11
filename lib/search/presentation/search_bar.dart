@@ -4,7 +4,7 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import '../shared/providers.dart';
 
-class SearchBar extends StatefulWidget {
+class SearchBar extends StatefulWidget /*ConsumerStatefulWidget */ {
   final Widget body;
   final String title, hint;
   final void Function(String searchTerm) onShouldNavigateToResultPage;
