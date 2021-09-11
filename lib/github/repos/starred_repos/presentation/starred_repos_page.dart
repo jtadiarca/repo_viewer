@@ -4,6 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:repo_viewer/core/presentation/routes/app_router.gr.dart';
+import 'package:repo_viewer/search/presentation/search_bar.dart';
 
 import '../../../../auth/shared/providers.dart';
 import '../../../core/shared/providers.dart';
@@ -36,28 +37,16 @@ class _StarredReposPageState extends State<StarredReposPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Starred repos'),
-        actions: [
-          IconButton(
-            icon: const Icon(MdiIcons.logoutVariant),
-            onPressed: () {
-              // ref.read(authNotifierProvider.notifier).signOut()
-              context.read(authNotifierProvider.notifier).signOut();
-            },
-          ),
-          IconButton(
-            icon: const Icon(MdiIcons.magnify),
-            onPressed: () {
-              AutoRouter.of(context)
-                  .push(SearchedReposRoute(searchTerm: 'flutter'));
-            },
-          )
-        ],
-      ),
-      body: FloatingSearchBar(
-        builder: (context, transition) {
-          return Container();
+      body: SearchBar(
+        title: 'Starred repositories',
+        hint: 'Search all repositories...',
+        onShouldNavigateToResultPage: (searchTerm) {
+          AutoRouter.of(context)
+              .push(SearchedReposRoute(searchTerm: searchTerm));
+        },
+        onSignOutButtonPressed: () {
+          // ref.read(authNotifierProvider.notifier).signOut()
+          context.read(authNotifierProvider.notifier).signOut();
         },
         body: PaginatedReposListView(
           paginatedReposNotifierProvider: starredReposNotifierProvider,
