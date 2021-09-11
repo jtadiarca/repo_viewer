@@ -4,10 +4,10 @@ import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import '../../../../core/presentation/toasts.dart';
 import '../../../core/presentation/no_results_display.dart';
-import '../../starred_repos/presentation/repo_tile.dart';
 import '../application/paginated_repos_notifier.dart';
 import 'failure_repo_tile.dart';
 import 'loading_repo_tile.dart';
+import 'repo_tile.dart';
 
 class PaginatedReposListView extends StatefulWidget {
   final AutoDisposeStateNotifierProvider<PaginatedReposNotifier,
@@ -100,7 +100,10 @@ class _PaginatedListView extends StatelessWidget {
     return ListView.builder(
       padding: floatingSearchBar == null
           ? EdgeInsets.zero
-          : EdgeInsets.only(top: floatingSearchBar.height + 8),
+          : EdgeInsets.only(
+              top: floatingSearchBar.height +
+                  8 +
+                  MediaQuery.of(context).padding.top),
       itemCount: state.map(
         initial: (_) => 0,
         loadInProgress: (_) => _.repos.entity.length + _.itemsPerPage,
