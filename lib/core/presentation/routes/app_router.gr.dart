@@ -9,9 +9,10 @@ import 'package:flutter/material.dart' as _i2;
 
 import '../../../auth/presentation/authorization_page.dart' as _i5;
 import '../../../auth/presentation/sign_in_page.dart' as _i4;
-import '../../../github/repos/core/presentation/starred_repos_page.dart' as _i6;
 import '../../../github/repos/searched_repos/presentation/searched_repos_page.dart'
     as _i7;
+import '../../../github/repos/starred_repos/presentation/starred_repos_page.dart'
+    as _i6;
 import '../../../splash/presentation/splash_page.dart' as _i3;
 
 class AppRouter extends _i1.RootStackRouter {
