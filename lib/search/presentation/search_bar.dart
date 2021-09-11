@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import '../shared/providers.dart';
 
@@ -36,6 +37,13 @@ class _SearchBarState extends State<SearchBar> /*ConsumerState<SearchBar>*/ {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return FloatingSearchBar(
+      body: widget.body,
+      title: Text(widget.title),
+      hint: widget.hint,
+      builder: (context, transition) {
+        return Container();
+      },
+    );
   }
 }

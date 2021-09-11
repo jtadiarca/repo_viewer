@@ -48,19 +48,21 @@ class _StarredReposPageState extends State<StarredReposPage> {
           // ref.read(authNotifierProvider.notifier).signOut()
           context.read(authNotifierProvider.notifier).signOut();
         },
-        body: PaginatedReposListView(
-          paginatedReposNotifierProvider: starredReposNotifierProvider,
-          getNextPage: (/*ref*/ context) {
-            // ref
-            //     .read(starredReposNotifierProvider.notifier)
-            //     .getNextStarredReposPage();
+        body: SafeArea(
+          child: PaginatedReposListView(
+            paginatedReposNotifierProvider: starredReposNotifierProvider,
+            getNextPage: (/*ref*/ context) {
+              // ref
+              //     .read(starredReposNotifierProvider.notifier)
+              //     .getNextStarredReposPage();
 
-            context
-                .read(starredReposNotifierProvider.notifier)
-                .getNextStarredReposPage();
-          },
-          noResultsMessage:
-              "That's about everything we could find in your starred repos right now.",
+              context
+                  .read(starredReposNotifierProvider.notifier)
+                  .getNextStarredReposPage();
+            },
+            noResultsMessage:
+                "That's about everything we could find in your starred repos right now.",
+          ),
         ),
       ),
     );

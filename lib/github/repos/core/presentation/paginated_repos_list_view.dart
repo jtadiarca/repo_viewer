@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 
 import '../../../../core/presentation/toasts.dart';
 import '../../../core/presentation/no_results_display.dart';
-import '../../../core/shared/providers.dart';
-import '../../starred_repos/application/starred_repos_notifier.dart';
 import '../../starred_repos/presentation/repo_tile.dart';
 import '../application/paginated_repos_notifier.dart';
 import 'failure_repo_tile.dart';
@@ -97,7 +96,11 @@ class _PaginatedListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final floatingSearchBar = FloatingSearchBar.of(context)?.widget;
     return ListView.builder(
+      padding: floatingSearchBar == null
+          ? EdgeInsets.zero
+          : EdgeInsets.only(top: floatingSearchBar.height + 8),
       itemCount: state.map(
         initial: (_) => 0,
         loadInProgress: (_) => _.repos.entity.length + _.itemsPerPage,
