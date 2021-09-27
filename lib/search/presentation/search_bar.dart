@@ -89,29 +89,39 @@ class _SearchBarState extends State<SearchBar> /*ConsumerState<SearchBar>*/ {
         _controller.close();
       },
       builder: (context, transition) {
-        return Consumer(
-          builder: (context, ref, child) {
-            final searchHistoryState = ref.watch(searchHistoryNotifierProvider);
-            return searchHistoryState.map(
-              data: (history) {
-                return Column(
-                  children: history.value
-                      .map(
-                        (term) => ListTile(
-                          title: Text(term),
-                        ),
-                      )
-                      .toList(),
-                );
-              },
-              loading: (_) => const ListTile(
-                title: LinearProgressIndicator(),
-              ),
-              error: (_) => ListTile(
-                title: Text('Unexpected error ${_.error}'),
-              ),
-            );
-          },
+        return Material(
+          borderRadius: BorderRadius.circular(5),
+          clipBehavior: Clip.hardEdge,
+          color: Theme.of(context).cardColor,
+          elevation: 4,
+          child: Consumer(
+            builder: (context, ref, child) {
+              final searchHistoryState =
+                  ref.watch(searchHistoryNotifierProvider);
+              return searchHistoryState.map(
+                data: (history) {
+                  return Column(
+                    children: history.value
+                        .map(
+                          (term) => ListTile(
+                            title: Text(term),
+                            onTap: () {
+                              print('hey');
+                            },
+                          ),
+                        )
+                        .toList(),
+                  );
+                },
+                loading: (_) => const ListTile(
+                  title: LinearProgressIndicator(),
+                ),
+                error: (_) => ListTile(
+                  title: Text('Unexpected error ${_.error}'),
+                ),
+              );
+            },
+          ),
         );
       },
     );
