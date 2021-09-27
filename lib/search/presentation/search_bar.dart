@@ -47,6 +47,26 @@ class _SearchBarState extends State<SearchBar> /*ConsumerState<SearchBar>*/ {
 
   @override
   Widget build(BuildContext context) {
+    void pushPageAndPutFirstInHistory(String searchTerm) {
+      widget.onShouldNavigateToResultPage(searchTerm);
+      // ref.read(searchHistoryNotifierProvider.notifier).putSearchTermFirst(searchTerm)
+      context
+          .read(searchHistoryNotifierProvider.notifier)
+          .putSearchTermFirst(searchTerm);
+
+      _controller.close();
+    }
+
+    void pushPageAndAddToHistory(String searchTerm) {
+      widget.onShouldNavigateToResultPage(searchTerm);
+      // ref.read(searchHistoryNotifierProvider.notifier).addSearchTerm(searchTerm)
+      context
+          .read(searchHistoryNotifierProvider.notifier)
+          .addSearchTerm(searchTerm);
+
+      _controller.close();
+    }
+
     return FloatingSearchBar(
       controller: _controller,
       body: FloatingSearchBarScrollNotifier(
@@ -79,14 +99,14 @@ class _SearchBarState extends State<SearchBar> /*ConsumerState<SearchBar>*/ {
           ),
         )
       ],
-      onSubmitted: (query) {
-        widget.onShouldNavigateToResultPage(query);
-        // ref.read(searchHistoryNotifierProvider.notifier).addSearchTerm(query)
+      onQueryChanged: (query) {
+        // ref.read(searchHistoryNotifierProvider.notifier).watchSearchTerms(filter: query);
         context
             .read(searchHistoryNotifierProvider.notifier)
-            .addSearchTerm(query);
-
-        _controller.close();
+            .watchSearchTerms(filter: query);
+      },
+      onSubmitted: (query) {
+        pushPageAndAddToHistory(query);
       },
       builder: (context, transition) {
         return Material(
@@ -100,13 +120,46 @@ class _SearchBarState extends State<SearchBar> /*ConsumerState<SearchBar>*/ {
                   ref.watch(searchHistoryNotifierProvider);
               return searchHistoryState.map(
                 data: (history) {
+                  if (_controller.query.isEmpty && history.value.isEmpty) {
+                    return Container(
+                      height: 56.0,
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Start Searching',
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    );
+                  } else if (history.value.isEmpty) {
+                    return ListTile(
+                      title: Text(_controller.query),
+                      leading: const Icon(Icons.search),
+                      onTap: () {
+                        pushPageAndAddToHistory(_controller.query);
+                      },
+                    );
+                  }
                   return Column(
                     children: history.value
                         .map(
                           (term) => ListTile(
-                            title: Text(term),
+                            leading: const Icon(Icons.history),
+                            title: Text(
+                              term,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                // ref.read(searchHistoryNotifierProvider.notifier);
+                                context
+                                    .read(
+                                        searchHistoryNotifierProvider.notifier)
+                                    .deleteSearchTerm(term);
+                              },
+                            ),
                             onTap: () {
-                              print('hey');
+                              pushPageAndPutFirstInHistory(term);
                             },
                           ),
                         )
