@@ -275,7 +275,7 @@ packages:
   flutter_riverpod:
     dependency: "direct overridden"
     description:
-      path: "packages\\flutter_riverpod"
+      path: "packages/flutter_riverpod"
       ref: "147be70df096015af0633456a951d8f2f9c66dc9"
       resolved-ref: "147be70df096015af0633456a951d8f2f9c66dc9"
       url: "https://github.com/rrousselGit/river_pod.git"
@@ -331,7 +331,7 @@ packages:
   hooks_riverpod:
     dependency: "direct main"
     description:
-      path: "packages\\hooks_riverpod"
+      path: "packages/hooks_riverpod"
       ref: "147be70df096015af0633456a951d8f2f9c66dc9"
       resolved-ref: "147be70df096015af0633456a951d8f2f9c66dc9"
       url: "https://github.com/rrousselGit/river_pod.git"
@@ -550,7 +550,7 @@ packages:
   riverpod:
     dependency: "direct overridden"
     description:
-      path: "packages\\riverpod"
+      path: "packages/riverpod"
       ref: "147be70df096015af0633456a951d8f2f9c66dc9"
       resolved-ref: "147be70df096015af0633456a951d8f2f9c66dc9"
       url: "https://github.com/rrousselGit/river_pod.git"
