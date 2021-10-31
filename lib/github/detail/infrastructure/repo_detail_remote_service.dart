@@ -52,6 +52,46 @@ class RepoDetailRemoteService {
     } on DioError catch (e) {
       if (e.isNoConnectionError) {
         return const RemoteResponse.noConnection();
+      } else if (e.response != null) {
+        throw RestApiException(e.response?.statusCode);
+      } else {
+        rethrow;
+      }
+    }
+  }
+
+  /// Returns `null` if there's no Internet connection
+  Future<bool?> getStarredStatus(String fullRepoName) async {
+    final requestUri = Uri.https(
+      'api.github.com',
+      '/user/starred/$fullRepoName',
+    );
+
+    try {
+      final response = await _dio.getUri(
+        requestUri,
+        options: Options(
+          validateStatus: (status) =>
+              (status != null &&
+                  status >= HttpStatus.ok &&
+                  status < HttpStatus.badRequest) ||
+              status == HttpStatus.notFound,
+        ),
+      );
+
+      switch (response.statusCode) {
+        case HttpStatus.noContent:
+          return true;
+        case HttpStatus.notFound:
+          return false;
+        default:
+          throw RestApiException(response.statusCode);
+      }
+    } on DioError catch (e) {
+      if (e.isNoConnectionError) {
+        return null;
+      } else if (e.response != null) {
+        throw RestApiException(e.response?.statusCode);
       } else {
         rethrow;
       }
