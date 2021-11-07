@@ -9,6 +9,8 @@ import 'package:flutter/material.dart' as _i2;
 
 import '../../../auth/presentation/authorization_page.dart' as _i5;
 import '../../../auth/presentation/sign_in_page.dart' as _i4;
+import '../../../github/core/domain/github_repo.dart' as _i9;
+import '../../../github/detail/presentation/repo_detail_page.dart' as _i8;
 import '../../../github/repos/searched_repos/presentation/searched_repos_page.dart'
     as _i7;
 import '../../../github/repos/starred_repos/presentation/starred_repos_page.dart'
@@ -52,6 +54,12 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<SearchedReposRouteArgs>();
           return _i7.SearchedReposPage(
               key: args.key, searchTerm: args.searchTerm);
+        }),
+    RepoDetailRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<RepoDetailRouteArgs>();
+          return _i8.RepoDetailPage(key: args.key, repo: args.repo);
         })
   };
 
@@ -61,7 +69,8 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(SignInRoute.name, path: '/sign-in'),
         _i1.RouteConfig(AuthorizationRoute.name, path: '/auth'),
         _i1.RouteConfig(StarredReposRoute.name, path: '/starred'),
-        _i1.RouteConfig(SearchedReposRoute.name, path: '/search')
+        _i1.RouteConfig(SearchedReposRoute.name, path: '/search'),
+        _i1.RouteConfig(RepoDetailRoute.name, path: '/detail')
       ];
 }
 
@@ -127,4 +136,20 @@ class SearchedReposRouteArgs {
   final _i2.Key? key;
 
   final String searchTerm;
+}
+
+class RepoDetailRoute extends _i1.PageRouteInfo<RepoDetailRouteArgs> {
+  RepoDetailRoute({_i2.Key? key, required _i9.GithubRepo repo})
+      : super(name,
+            path: '/detail', args: RepoDetailRouteArgs(key: key, repo: repo));
+
+  static const String name = 'RepoDetailRoute';
+}
+
+class RepoDetailRouteArgs {
+  const RepoDetailRouteArgs({this.key, required this.repo});
+
+  final _i2.Key? key;
+
+  final _i9.GithubRepo repo;
 }
